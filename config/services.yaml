@@ -5,6 +5,19 @@
 # https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
 parameters:
 
+    imports: [5, 10, 25, 100]
+
+    products:
+        -
+            name: 'WATER'
+            price: 65
+        -
+            name: 'JUICE'
+            price: 100
+        -
+            name: 'SODA'
+            price: 150
+
 services:
     # default configuration for services in *this* file
     _defaults:
