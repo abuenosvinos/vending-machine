@@ -3,7 +3,9 @@
 namespace App\UI\Command;
 
 use App\UI\Command\Operation\GetProductOperation;
+use App\UI\Command\Operation\InsertCoinOperation;
 use App\UI\Command\Operation\Operation;
+use App\UI\Command\Operation\OperationNotAvailableException;
 use App\UI\Command\Operation\ReturnCoinOperation;
 use App\UI\Command\Operation\ServiceOperation;
 use Psr\Container\ContainerInterface;
@@ -58,6 +60,7 @@ class VendingMachineCommand extends Command
         $this->operations[] = new ServiceOperation();
         $this->operations[] = new GetProductOperation($this->container);
         $this->operations[] = new ReturnCoinOperation();
+        $this->operations[] = new InsertCoinOperation($this->container);
     }
 
 
@@ -74,11 +77,12 @@ class VendingMachineCommand extends Command
 
         $helper = $this->getHelper('question');
         do {
+
             try {
                 $answer = $helper->ask($input, $output, $question);
 
                 if ($answer === null) {
-                    throw new \Exception('Operation not available');
+                    throw new OperationNotAvailableException();
                 }
 
                 $attended = false;
@@ -99,11 +103,11 @@ class VendingMachineCommand extends Command
                 }
 
                 if (!$attended && $this->isFinish($answer)) {
-                    $output->writeln('Operation not available');
+                    throw new OperationNotAvailableException();
                 }
 
             } catch (\Throwable $e) {
-                $output->writeln('Operation not available');
+                $output->writeln($e->getMessage());
             }
 
         } while ($this->isFinish($answer));
