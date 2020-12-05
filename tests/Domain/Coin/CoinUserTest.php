@@ -29,8 +29,7 @@ class CoinUserTest extends KernelTestCase
             $values,
             array_map(function(Coin $coin) {
                 return $coin->value();
-            },
-            $coinUser->coins())
+            }, $coinUser->coins())
         );
 
         $coinUser->removeCoins();
