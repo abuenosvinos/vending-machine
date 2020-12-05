@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Tests;
+namespace App\Tests\UI\Command\Operation;
 
 use App\UI\Command\Operation\GetProductOperation;
 use App\UI\Command\Operation\InsertCoinOperation;
