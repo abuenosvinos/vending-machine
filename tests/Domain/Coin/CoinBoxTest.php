@@ -11,7 +11,7 @@ class CoinBoxTest extends KernelTestCase
 {
     protected function setUp(): void
     {
-        self::bootKernel(['environment' => 'test']);
+        self::bootKernel();
 
         parent::setUp();
     }

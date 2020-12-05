@@ -5,6 +5,9 @@
 # https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
 parameters:
 
+    file_coin_box: '%kernel.project_dir%/var/store/coinBox.json'
+    file_coin_user: '%kernel.project_dir%/var/store/coinUser.json'
+
     imports: [0.5, 0.10, 0.25, 1.00]
 
     products:
