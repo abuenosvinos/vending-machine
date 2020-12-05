@@ -13,12 +13,19 @@ class FileSystemCoinBoxRepository implements CoinBoxRepository
     public function __construct(ContainerInterface $container)
     {
         $this->file = $container->getParameter('file_coin_box');
+        if (!file_exists($this->file)) {
+            touch($this->file);
+        }
     }
 
     public function get(): CoinBox
     {
         $file = file_get_contents($this->file);
-        return unserialize($file);
+        $instance = unserialize($file);
+        if (!($instance instanceof CoinBox)) {
+            $instance = new CoinBox();
+        }
+        return $instance;
     }
 
     public function store(CoinBox $coinBox): void
