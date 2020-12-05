@@ -2,13 +2,15 @@
 
 namespace App\UI\Command;
 
+use App\Application\ReturnCoin\ReturnCoinQuery;
+use App\Domain\Coin\Coin;
+use App\Domain\Coin\CoinUser;
+use App\Shared\Domain\Bus\Command\CommandBus;
+use App\Shared\Domain\Bus\Query\QueryBus;
 use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Console\Question\Question;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
 class ReturnCoinCommand extends Command
@@ -20,9 +22,16 @@ class ReturnCoinCommand extends Command
      */
     private $io;
 
-    public function __construct()
+    private CommandBus $commandBus;
+
+    private QueryBus $queryBus;
+
+    public function __construct(CommandBus $commandBus, QueryBus $queryBus)
     {
         parent::__construct();
+
+        $this->commandBus = $commandBus;
+        $this->queryBus = $queryBus;
     }
 
     protected function configure(): void
@@ -46,13 +55,20 @@ class ReturnCoinCommand extends Command
         $this->io = new SymfonyStyle($input, $output);
     }
 
-
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $coins = $input->getArgument('coins');
-        dump($coins);
+        /** @var CoinUser $coinUser */
+        $coinUser = $this->queryBus->ask(new ReturnCoinQuery());
 
-        $output->writeln('Command Return Coin');
+        $this->commandBus->dispatch(new \App\Application\ReturnCoin\ReturnCoinCommand());
+
+        $values = array_map(function(Coin $coin) {
+            return $coin->value();
+        }, $coinUser->coins());
+
+        if (count($values) > 0) {
+            $this->io->writeln(implode(', ', $values));
+        }
 
         return Command::SUCCESS;
     }
