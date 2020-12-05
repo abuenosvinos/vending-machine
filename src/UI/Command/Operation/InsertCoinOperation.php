@@ -32,7 +32,8 @@ class InsertCoinOperation implements Operation
         $input = (float)$input;
 
         if (!in_array($input, $this->imports)) {
-            throw new NotValidCoinException('The coin is not valid: ' . $input);
+            sort($this->imports);
+            throw new NotValidCoinException(sprintf('The Coin %d is not valid. Only %s', $input, implode(', ', $this->imports)));
         }
 
         return true;
