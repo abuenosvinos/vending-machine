@@ -2,11 +2,14 @@
 
 namespace App\UI\Command;
 
+use App\Application\ReturnCoin\ReturnCoinQuery;
+use App\Domain\Coin\Coin;
+use App\Domain\Coin\CoinUser;
+use App\Shared\Domain\Bus\Command\CommandBus;
+use App\Shared\Domain\Bus\Query\QueryBus;
 use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
 
@@ -19,9 +22,16 @@ class InsertCoinCommand extends Command
      */
     private $io;
 
-    public function __construct()
+    private CommandBus $commandBus;
+
+    private QueryBus $queryBus;
+
+    public function __construct(CommandBus $commandBus, QueryBus $queryBus)
     {
         parent::__construct();
+
+        $this->commandBus = $commandBus;
+        $this->queryBus = $queryBus;
     }
 
     protected function configure(): void
@@ -48,9 +58,19 @@ class InsertCoinCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $coin = $input->getArgument('coin');
-        dump($coin);
 
-        $output->writeln('Command Insert Coin');
+        $command = new \App\Application\InsertCoin\InsertCoinCommand(new Coin($coin));
+        $this->commandBus->dispatch($command);
+
+        /** @var CoinUser $coinUser */
+        $coinUser = $this->queryBus->ask(new ReturnCoinQuery());
+
+        $values = array_map(function(Coin $coin) {
+            return $coin->value();
+        }, $coinUser->coins());
+        $credit = array_sum($values);
+
+        $output->writeln(sprintf('Coin valid: Credit %d', $credit));
 
         return Command::SUCCESS;
     }
