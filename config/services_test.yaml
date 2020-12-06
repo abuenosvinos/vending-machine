@@ -3,4 +3,5 @@ parameters:
 
     file_coin_box: '%kernel.project_dir%/var/tmp/coinBox.json'
     file_coin_user: '%kernel.project_dir%/var/tmp/coinUser.json'
+    file_product_box: '%kernel.project_dir%/var/tmp/productBox.json'
 
