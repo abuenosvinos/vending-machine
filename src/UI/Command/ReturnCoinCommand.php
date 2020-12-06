@@ -38,7 +38,6 @@ class ReturnCoinCommand extends Command
     {
         $this
             ->setDescription('Return coins inserted')
-            ->addArgument('coins', InputArgument::IS_ARRAY, 'Coins to return')
             ->setHelp($this->getCommandHelp())
         ;
     }

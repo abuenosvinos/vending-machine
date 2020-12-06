@@ -29,18 +29,13 @@ class GetProductOperation implements Operation
 
     public function attend(string $input): bool
     {
-        $input = array_map('trim', explode(',', $input));
-        $command = end($input);
-        return (in_array($command, $this->actions()));
+        return (in_array($input, $this->actions()));
     }
 
     public function params(string $input): array
     {
-        $input = array_map('trim', explode(',', $input));
-        $product = array_pop($input);
         return [
-            'product' => $product,
-            'coins' => $input
+            'product' => $input
         ];
     }
 }
