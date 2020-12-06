@@ -27,7 +27,7 @@ class FileSystemCoinBoxRepositoryTest extends KernelTestCase
     {
         $repository = new FileSystemCoinBoxRepository(self::$kernel->getContainer());
 
-        $coinBox = new CoinBox();
+        $coinBox = CoinBox::fromRacks();
         $repository->store($coinBox);
 
         $this->assertEquals($coinBox, $repository->get());
@@ -37,10 +37,10 @@ class FileSystemCoinBoxRepositoryTest extends KernelTestCase
     {
         $repository = new FileSystemCoinBoxRepository(self::$kernel->getContainer());
 
-        $coinBox = new CoinBox();
+        $coinBox = CoinBox::fromRacks();
         $values = ['0.05', '0.10', '0.5', '1'];
         foreach ($values as $value) {
-            $coinBox->addCoin(new Coin($value));
+            $coinBox->addCoin(Coin::fromValue($value));
         }
 
         $repository->store($coinBox);

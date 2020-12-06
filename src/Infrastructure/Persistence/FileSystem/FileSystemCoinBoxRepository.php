@@ -23,7 +23,7 @@ class FileSystemCoinBoxRepository implements CoinBoxRepository
         $file = file_get_contents($this->file);
         $instance = unserialize($file);
         if (!($instance instanceof CoinBox)) {
-            $instance = new CoinBox();
+            $instance = CoinBox::fromRacks();
         }
         return $instance;
     }

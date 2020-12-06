@@ -32,7 +32,7 @@ class ProductBox
         return $this->racks;
     }
 
-    public static function fromRacks(array $racks = [])
+    public static function fromRacks(array $racks = []): ProductBox
     {
         return new self($racks);
     }

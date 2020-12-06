@@ -6,7 +6,7 @@ class CoinBox
 {
     private array $racks = [];
 
-    public function __construct(array $racks = [])
+    private function __construct(array $racks = [])
     {
         $this->racks = $racks;
     }
@@ -21,7 +21,7 @@ class CoinBox
             }
         }
 
-        $coinRack = new CoinRack($coin->value());
+        $coinRack = CoinRack::fromValue($coin->value());
         $coinRack->addCoin($coin);
 
         $this->racks[] = $coinRack;
@@ -30,5 +30,10 @@ class CoinBox
     public function racks(): array
     {
         return $this->racks;
+    }
+
+    public static function fromRacks(array $racks = []): CoinBox
+    {
+        return new self($racks);
     }
 }

@@ -59,7 +59,7 @@ class InsertCoinCommand extends Command
     {
         $coin = $input->getArgument('coin');
 
-        $command = new \App\Application\InsertCoin\InsertCoinCommand(new Coin($coin));
+        $command = new \App\Application\InsertCoin\InsertCoinCommand(Coin::fromValue($coin));
         $this->commandBus->dispatch($command);
 
         /** @var CoinUser $coinUser */

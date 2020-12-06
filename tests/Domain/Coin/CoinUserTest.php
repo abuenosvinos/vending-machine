@@ -19,10 +19,10 @@ class CoinUserTest extends KernelTestCase
     {
         $values = [0.05, 0.05, 0.10, 0.5, 0.10, 0.05, 0.5, 1, 0.5];
 
-        $coinUser = new CoinUser();
+        $coinUser = CoinUser::fromCoins();
 
         foreach ($values as $value) {
-            $coinUser->addCoin(new Coin($value));
+            $coinUser->addCoin(Coin::fromValue($value));
         }
 
         $this->assertEquals(

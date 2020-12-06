@@ -22,10 +22,10 @@ class CoinRackTest extends KernelTestCase
         $add = 7;
         $remove = 3;
 
-        $coinRack = new CoinRack($value);
+        $coinRack = CoinRack::fromValue($value);
 
         for ($i=0; $i < $add; $i++) {
-            $coinRack->addCoin(new Coin($value));
+            $coinRack->addCoin(Coin::fromValue($value));
         }
 
         $this->assertTrue($coinRack->isSame($value));
@@ -42,8 +42,8 @@ class CoinRackTest extends KernelTestCase
         $value = 1.32;
         $differentValue = 6.66;
 
-        $coinRack = new CoinRack($value);
-        $coinRack->addCoin(new Coin($differentValue));
+        $coinRack = CoinRack::fromValue($value);
+        $coinRack->addCoin(Coin::fromValue($differentValue));
     }
 
     public function testCoinRackBadOperationsByRemoving()
@@ -54,10 +54,10 @@ class CoinRackTest extends KernelTestCase
         $add = 5;
         $remove = 6;
 
-        $coinRack = new CoinRack($value);
+        $coinRack = CoinRack::fromValue($value);
 
         for ($i=0; $i < $add; $i++) {
-            $coinRack->addCoin(new Coin($value));
+            $coinRack->addCoin(Coin::fromValue($value));
         }
 
         $coinRack->removeCoins($remove);

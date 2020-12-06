@@ -7,7 +7,7 @@ class CoinRack
     private float $value;
     private int $quantity;
 
-    public function __construct(string $value)
+    private function __construct(string $value)
     {
         $this->value = $value;
         $this->quantity = 0;
@@ -44,5 +44,12 @@ class CoinRack
     public function isSame(float $value)
     {
         return ($this->value === $value);
+    }
+
+    public static function fromValue(string $value): CoinRack
+    {
+        return new self(
+            $value
+        );
     }
 }

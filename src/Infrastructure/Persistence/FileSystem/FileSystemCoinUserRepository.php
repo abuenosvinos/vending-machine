@@ -24,7 +24,7 @@ class FileSystemCoinUserRepository implements CoinUserRepository
         $file = file_get_contents($this->file);
         $instance = unserialize($file);
         if (!($instance instanceof CoinUser)) {
-            $instance = new CoinUser();
+            $instance = CoinUser::fromCoins();
         }
         return $instance;
     }

@@ -6,7 +6,7 @@ class CoinUser
 {
     private array $coins = [];
 
-    public function __construct(array $coins = [])
+    private function __construct(array $coins = [])
     {
         $this->coins = $coins;
     }
@@ -24,5 +24,10 @@ class CoinUser
     public function removeCoins()
     {
         $this->coins = [];
+    }
+
+    public static function fromCoins(array $coins = []): CoinUser
+    {
+        return new self($coins);
     }
 }

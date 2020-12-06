@@ -20,10 +20,10 @@ class CoinBoxTest extends KernelTestCase
     {
         $values = [0.05, 0.05, 0.10, 0.5, 0.10, 0.05, 0.5, 1, 0.5];
 
-        $coinBox = new CoinBox();
+        $coinBox = CoinBox::fromRacks();
 
         foreach ($values as $value) {
-            $coinBox->addCoin(new Coin($value));
+            $coinBox->addCoin(Coin::fromValue($value));
         }
 
         $racks = $coinBox->racks();

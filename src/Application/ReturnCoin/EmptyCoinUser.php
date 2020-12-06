@@ -18,6 +18,6 @@ final class EmptyCoinUser
 
     public function __invoke()
     {
-        $this->repository->store(new CoinUser());
+        $this->repository->store(CoinUser::fromCoins());
     }
 }

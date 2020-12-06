@@ -6,7 +6,7 @@ class Coin
 {
     private float $value;
 
-    public function __construct(string $value)
+    private function __construct(string $value)
     {
         $this->value = $value;
     }
@@ -14,5 +14,12 @@ class Coin
     public function value(): float
     {
         return $this->value;
+    }
+
+    public static function fromValue(string $value): Coin
+    {
+        return new self(
+            $value
+        );
     }
 }
