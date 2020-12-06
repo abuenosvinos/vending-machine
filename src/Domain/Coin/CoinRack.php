@@ -20,7 +20,7 @@ class CoinRack
 
     public function addCoin(Coin $coin)
     {
-        if (!$this->isSame($coin->value())) {
+        if (!$this->isSame($coin)) {
             throw new CoinRackBadOperationException(sprintf('Not possible add Coin %d on Rack %d', $coin->value(), $this->value()));
         }
 
@@ -41,9 +41,9 @@ class CoinRack
         return $this->quantity;
     }
 
-    public function isSame(float $value)
+    public function isSame(Coin $coin)
     {
-        return ($this->value === $value);
+        return ($this->value === $coin->value());
     }
 
     public static function fromValue(string $value): CoinRack

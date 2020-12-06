@@ -38,4 +38,18 @@ class CoinBoxTest extends KernelTestCase
 
         $this->assertEquals(array_sum($values), $total);
     }
+
+    public function testCoinBoxQuantity()
+    {
+        $value = 0.5;
+        $coin = Coin::fromValue($value);
+        $quantity = 16;
+
+        $coinBox = CoinBox::fromRacks();
+        $coinBox->setQuantityOfCoin($coin, $quantity);
+
+        $coinRack = $coinBox->getRack($coin);
+        $this->assertNotNull($coinRack);
+        $this->assertEquals($coinRack->quantity(), $quantity);
+    }
 }

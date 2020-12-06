@@ -19,16 +19,17 @@ class CoinRackTest extends KernelTestCase
     public function testCoinRack()
     {
         $value = 1.32;
+        $coin = Coin::fromValue($value);
         $add = 7;
         $remove = 3;
 
         $coinRack = CoinRack::fromValue($value);
 
         for ($i=0; $i < $add; $i++) {
-            $coinRack->addCoin(Coin::fromValue($value));
+            $coinRack->addCoin($coin);
         }
 
-        $this->assertTrue($coinRack->isSame($value));
+        $this->assertTrue($coinRack->isSame($coin));
         $this->assertEquals($add, $coinRack->quantity());
 
         $coinRack->removeCoins($remove);

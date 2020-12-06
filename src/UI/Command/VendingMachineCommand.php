@@ -11,9 +11,7 @@ use App\UI\Command\Operation\ServiceOperation;
 use Psr\Container\ContainerInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\ArrayInput;
-use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\Question;
 use Symfony\Component\Console\Style\SymfonyStyle;
@@ -79,7 +77,7 @@ class VendingMachineCommand extends Command
         do {
 
             try {
-                $answer = $helper->ask($input, $output, $question);
+                $answer = $helper->ask($input, $this->io, $question);
 
                 if ($answer === null) {
                     throw new OperationNotAvailableException();
@@ -95,7 +93,7 @@ class VendingMachineCommand extends Command
                         $input = new ArrayInput($operation->params($answer));
 
                         $command = $this->getApplication()->find($operation->command());
-                        $returnCode = $command->run($input, $output);
+                        $returnCode = $command->run($input, $this->io);
 
                         $attended = true;
                         break;
@@ -107,10 +105,12 @@ class VendingMachineCommand extends Command
                 }
 
             } catch (\Throwable $e) {
-                $output->writeln($e->getMessage());
+                $this->io->warning($e->getMessage());
             }
 
         } while ($this->isFinish($answer));
+
+        $this->io->success('Bye!');
 
         return Command::SUCCESS;
     }

@@ -13,16 +13,34 @@ class ProductBox
 
     public function addProduct(Product $product)
     {
+        $rack = $this->getRack($product);
+
+        if ($rack == null) {
+            $rack = ProductRack::fromProduct($product);
+            $this->racks[] = $rack;
+        }
+
+        $rack->addProduct($product);
+    }
+
+    public function setQuantityOfProduct(Product $product, int $quantity)
+    {
         /** @var ProductRack $rack */
-        foreach ($this->racks as $rack) {
+        foreach ($this->racks as &$rack) {
             if ($rack->isSame($product)) {
-                $rack->addProduct($product);
+
+                $rack = ProductRack::fromProduct($product);
+                for ($i=0; $i<$quantity; $i++) {
+                    $rack->addProduct($product);
+                }
                 return;
             }
         }
 
         $productRack = ProductRack::fromProduct($product);
-        $productRack->addProduct($product);
+        for ($i=0; $i<$quantity; $i++) {
+            $productRack->addProduct($product);
+        }
 
         $this->racks[] = $productRack;
     }
@@ -30,6 +48,16 @@ class ProductBox
     public function racks(): array
     {
         return $this->racks;
+    }
+
+    public function getRack(Product $product): ?ProductRack
+    {
+        foreach ($this->racks as $rack) {
+            if ($rack->isSame($product)) {
+                return $rack;
+            }
+        }
+        return null;
     }
 
     public static function fromRacks(array $racks = []): ProductBox

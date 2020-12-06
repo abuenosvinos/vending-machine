@@ -70,4 +70,19 @@ class ProductBoxTest extends KernelTestCase
 
         $this->assertEquals($sumValues, $sumProducts);
     }
+
+
+    public function testProductBoxQuantity()
+    {
+        $value = ['name' => 'JUICE', 'price' => 0.65];
+        $product = Product::fromArray($value);
+        $quantity = 16;
+
+        $productBox = ProductBox::fromRacks();
+        $productBox->setQuantityOfProduct($product, $quantity);
+
+        $productRack = $productBox->getRack($product);
+        $this->assertNotNull($productRack);
+        $this->assertEquals($productRack->quantity(), $quantity);
+    }
 }
