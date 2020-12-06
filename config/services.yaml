@@ -7,7 +7,7 @@ parameters:
 
     file_coin_box: '%kernel.project_dir%/var/store/coinBox.json'
     file_coin_user: '%kernel.project_dir%/var/store/coinUser.json'
-    file_product_user: '%kernel.project_dir%/var/store/productUser.json'
+    file_product_box: '%kernel.project_dir%/var/store/productUser.json'
 
     imports: [0.5, 0.10, 0.25, 1.00]
 
@@ -52,6 +52,9 @@ services:
     App\Controller\:
         resource: '../src/UI/Controller/'
         tags: ['controller.service_arguments']
+
+    App\Domain\Product\ProductBoxRepository:
+        class: App\Infrastructure\Persistence\FileSystem\FileSystemProductBoxRepository
 
     App\Domain\Coin\CoinBoxRepository:
         class: App\Infrastructure\Persistence\FileSystem\FileSystemCoinBoxRepository
