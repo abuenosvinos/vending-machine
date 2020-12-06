@@ -14,9 +14,9 @@ final class MessageLoggerMiddleware implements MiddlewareInterface
 {
     private $logger;
 
-    public function __construct(LoggerInterface $logger)
+    public function __construct(LoggerInterface $eventLogger)
     {
-        $this->logger = $logger;
+        $this->logger = $eventLogger;
     }
 
     /**

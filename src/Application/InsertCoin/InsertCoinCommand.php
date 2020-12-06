@@ -13,6 +13,8 @@ final class InsertCoinCommand extends Command
 
     public function __construct(Coin $coin)
     {
+        parent::__construct();
+
         $this->coin = $coin;
     }
 

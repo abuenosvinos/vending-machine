@@ -14,6 +14,8 @@ final class ServiceSetQuantityCoinCommand extends Command
 
     public function __construct(Coin $coin, int $quantity)
     {
+        parent::__construct();
+
         $this->coin = $coin;
         $this->quantity = $quantity;
     }
