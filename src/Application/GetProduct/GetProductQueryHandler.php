@@ -8,15 +8,15 @@ use App\Shared\Domain\Bus\Query\QueryHandler;
 
 final class GetProductQueryHandler implements QueryHandler
 {
-    private GetProduct $getProduct;
+    private CheckProduct $checkProduct;
 
-    public function __construct(GetProduct $getProduct)
+    public function __construct(CheckProduct $checkProduct)
     {
-        $this->getProduct = $getProduct;
+        $this->checkProduct = $checkProduct;
     }
 
     public function __invoke(GetProductQuery $query)
     {
-        return $this->getProduct->__invoke($query->product());
+        return $this->checkProduct->__invoke($query->product());
     }
 }
