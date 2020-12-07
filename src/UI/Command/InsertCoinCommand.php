@@ -7,6 +7,8 @@ use App\Domain\Coin\Coin;
 use App\Domain\Coin\CoinUser;
 use App\Shared\Domain\Bus\Command\CommandBus;
 use App\Shared\Domain\Bus\Query\QueryBus;
+use App\UI\Command\Operation\NotValidCoinException;
+use Psr\Container\ContainerInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -22,14 +24,17 @@ class InsertCoinCommand extends Command
      */
     private $io;
 
+    private $imports;
+
     private CommandBus $commandBus;
 
     private QueryBus $queryBus;
 
-    public function __construct(CommandBus $commandBus, QueryBus $queryBus)
+    public function __construct(ContainerInterface $container, CommandBus $commandBus, QueryBus $queryBus)
     {
         parent::__construct();
 
+        $this->imports = $container->getParameter('imports');
         $this->commandBus = $commandBus;
         $this->queryBus = $queryBus;
     }
@@ -58,6 +63,21 @@ class InsertCoinCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $coin = $input->getArgument('coin');
+
+        if (is_array($coin)) {
+            $coin = $coin[0];
+        }
+
+        if (filter_var($coin, FILTER_VALIDATE_FLOAT) === false) {
+            throw new NotValidCoinException(sprintf('The Coin %s is not valid. Only %s', $coin, implode(', ', $this->imports)));
+        }
+
+        $coin = (float)$coin;
+
+        if (!in_array($coin, $this->imports)) {
+            sort($this->imports);
+            throw new NotValidCoinException(sprintf('The Coin %d is not valid. Only %s', $coin, implode(', ', $this->imports)));
+        }
 
         $command = new \App\Application\InsertCoin\InsertCoinCommand(Coin::fromValue($coin));
         $this->commandBus->dispatch($command);

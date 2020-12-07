@@ -6,8 +6,8 @@ use LogicException;
 
 class OperationNotAvailableException extends LogicException
 {
-    public function __construct()
+    public function __construct($message = 'Operation not available')
     {
-        parent::__construct('Operation not available');
+        parent::__construct($message);
     }
 }

@@ -8,6 +8,7 @@ use App\Domain\Product\Product;
 use App\Domain\ProductSold;
 use App\Shared\Domain\Bus\Command\CommandBus;
 use App\Shared\Domain\Bus\Query\QueryBus;
+use App\UI\Command\Operation\OperationNotAvailableException;
 use Psr\Container\ContainerInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
@@ -80,9 +81,11 @@ class GetProductCommand extends Command
                 function($carry, Coin $item) {
                     $carry[] = $item->value();
                     return $carry;
-                }, $$response
+                }, $response
             );
             $this->io->writeln(implode(', ', $response));
+        } else {
+            throw new OperationNotAvailableException(sprintf('There isn\'t %s available', $nameProduct));
         }
 
         return Command::SUCCESS;
