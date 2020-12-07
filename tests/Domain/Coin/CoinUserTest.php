@@ -32,6 +32,11 @@ class CoinUserTest extends KernelTestCase
             }, $coinUser->coins())
         );
 
+        $this->assertEquals(
+            array_sum($values),
+            $coinUser->import()
+        );
+
         $coinUser->removeCoins();
         $this->assertEquals([], $coinUser->coins());
     }

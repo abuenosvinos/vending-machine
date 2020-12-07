@@ -2,6 +2,12 @@
 
 namespace App\UI\Command;
 
+use App\Application\GetProduct\GetProductQuery;
+use App\Domain\Coin\Coin;
+use App\Domain\Product\Product;
+use App\Domain\ProductSold;
+use App\Shared\Domain\Bus\Command\CommandBus;
+use App\Shared\Domain\Bus\Query\QueryBus;
 use Psr\Container\ContainerInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
@@ -15,16 +21,22 @@ class GetProductCommand extends Command
 
     private array $products;
 
+    private CommandBus $commandBus;
+
+    private QueryBus $queryBus;
+
     /**
      * @var SymfonyStyle
      */
     private $io;
 
-    public function __construct(ContainerInterface $container)
+    public function __construct(ContainerInterface $container, CommandBus $commandBus, QueryBus $queryBus)
     {
         parent::__construct();
 
         $this->products = $container->getParameter('products');
+        $this->commandBus = $commandBus;
+        $this->queryBus = $queryBus;
     }
 
     protected function configure(): void
@@ -48,13 +60,30 @@ class GetProductCommand extends Command
         $this->io = new SymfonyStyle($input, $output);
     }
 
-
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $product = $input->getArgument('product');
-        dump($product);
+        $nameProduct = $input->getArgument('product');
 
-        $output->writeln('Command Get Product');
+        $productSold = null;
+        foreach ($this->products as $product)
+        {
+            if ($product['name'] === $nameProduct) {
+                $productToBuy = Product::fromArray($product);
+                $productSold = $this->queryBus->ask(new GetProductQuery($productToBuy));
+                $this->commandBus->dispatch(new \App\Application\GetProduct\GetProductCommand($productToBuy));
+            }
+        }
+
+        if ($productSold instanceof ProductSold) {
+            $response = [$productSold->product()->name()];
+            $response = array_reduce($productSold->coins(),
+                function($carry, Coin $item) {
+                    $carry[] = $item->value();
+                    return $carry;
+                }, $$response
+            );
+            $this->io->writeln(implode(', ', $response));
+        }
 
         return Command::SUCCESS;
     }

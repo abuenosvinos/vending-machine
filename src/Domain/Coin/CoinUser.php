@@ -26,6 +26,16 @@ class CoinUser
         $this->coins = [];
     }
 
+    public function import(): float
+    {
+        return array_reduce($this->coins,
+            function($carry, Coin $item) {
+                $carry += $item->value();
+                return $carry;
+            }, 0
+        );
+    }
+
     public static function fromCoins(array $coins = []): CoinUser
     {
         return new self($coins);
