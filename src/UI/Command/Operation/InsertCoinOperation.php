@@ -33,7 +33,7 @@ class InsertCoinOperation implements Operation
 
         if (!in_array($input, $this->imports)) {
             sort($this->imports);
-            throw new NotValidCoinException(sprintf('The Coin %d is not valid. Only %s', $input, implode(', ', $this->imports)));
+            throw new NotValidCoinException(sprintf('The Coin %s is not valid. Only %s', $input, implode(', ', $this->imports)));
         }
 
         return true;
