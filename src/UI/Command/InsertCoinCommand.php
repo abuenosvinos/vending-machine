@@ -70,7 +70,7 @@ class InsertCoinCommand extends Command
         }, $coinUser->coins());
         $credit = array_sum($values);
 
-        $output->writeln(sprintf('Coin valid: Credit %d', $credit));
+        $output->writeln(sprintf('Coin valid: Credit %s', $credit));
 
         return Command::SUCCESS;
     }
