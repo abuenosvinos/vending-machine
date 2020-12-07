@@ -147,7 +147,7 @@ HELP;
 
         $coins = array_reduce($coinUser->coins(),
             function($carry, Coin $item) {
-                $carry[] = $item->value();
+                $carry[] = [$item->value()];
                 return $carry;
             }, []
         );
@@ -156,7 +156,7 @@ HELP;
         if (count($coins) > 0) {
             $this->io->horizontalTable(
                 ['Coin'],
-                [$coins]
+                $coins
             );
         } else {
             $this->io->writeln('Is Empty');
