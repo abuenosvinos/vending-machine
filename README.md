@@ -1,17 +1,25 @@
 
+## Preparation
+
+Execute the next command to create the image
+
+```
+docker build . -t vendor-machine-cli -f docker/php/Dockerfile
+```
+
 ## Installation
 ```
-docker run --rm -v $(pwd):/app -w /app  docker_php composer install
+docker run --rm -v $(pwd):/app -w /app  vendor-machine-cli composer install
 ```
 
 ## Test
 ```
-docker run --rm -v $(pwd):/app -w /app  docker_php php bin/phpunit
+docker run --rm -v $(pwd):/app -w /app  vendor-machine-cli php bin/phpunit
 ```
 
 ## Execution with main command
 ```
-docker run --rm -v $(pwd):/app -w /app --interactive --tty docker_php php bin/console app:machine-vending-start
+docker run --rm -v $(pwd):/app -w /app --interactive --tty vendor-machine-cli php bin/console app:machine-vending-start
 ```
 
 You can execute all the commands after the prompt `>`
@@ -38,13 +46,13 @@ The commands relative to Products are based on the parameter `products` of `serv
 You can also run the operations individually
 
 ```
-docker run --rm -v $(pwd):/app -w /app --interactive --tty docker_php php bin/console app:machine-vending-insert-coin 0.5
+docker run --rm -v $(pwd):/app -w /app --interactive --tty vendor-machine-cli php bin/console app:machine-vending-insert-coin 0.5
 
-docker run --rm -v $(pwd):/app -w /app --interactive --tty docker_php php bin/console app:machine-vending-return-coin
+docker run --rm -v $(pwd):/app -w /app --interactive --tty vendor-machine-cli php bin/console app:machine-vending-return-coin
 
-docker run --rm -v $(pwd):/app -w /app --interactive --tty docker_php php bin/console app:machine-vending-get-product WATER
+docker run --rm -v $(pwd):/app -w /app --interactive --tty vendor-machine-cli php bin/console app:machine-vending-get-product WATER
 
-docker run --rm -v $(pwd):/app -w /app --interactive --tty docker_php php bin/console app:machine-vending-service
+docker run --rm -v $(pwd):/app -w /app --interactive --tty vendor-machine-cli php bin/console app:machine-vending-service
 ```
 
 ## Status vending machine by http
@@ -52,7 +60,7 @@ docker run --rm -v $(pwd):/app -w /app --interactive --tty docker_php php bin/co
 If you want to check the inventory of the vending machine you can execute:
 
 ```
-docker run --rm --net=host -p 8000:8000 -v $(pwd):/app -w /app  docker_php php -S localhost:8000 -t public/
+docker run --rm --net=host -p 8000:8000 -v $(pwd):/app -w /app  vendor-machine-cli php -S localhost:8000 -t public/
 ```
 
 And then execute the next URL in your browser:
