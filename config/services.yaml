@@ -10,7 +10,6 @@ parameters:
     file_product_box: '%kernel.project_dir%/var/store/productUser.json'
 
     imports: [0.5, 0.10, 0.25, 1.00]
-
     products:
         -
             name: 'WATER'
@@ -21,6 +20,8 @@ parameters:
         -
             name: 'SODA'
             price: 1.50
+
+    dataMiningEnabled: false
 
 services:
     # default configuration for services in *this* file

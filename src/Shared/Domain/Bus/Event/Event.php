@@ -22,7 +22,7 @@ abstract class Event extends Request
         parent::__construct($eventId);
 
         $this->data        = $data;
-        $this->occurredOn  = $occurredOn ?: (new DateTimeImmutable())->format('Y-m-d H:i:s');
+        $this->occurredOn  = $occurredOn ?: (new DateTimeImmutable())->format('Y-m-d\TH:i:s.000\Z');
     }
 
     public function requestType(): string

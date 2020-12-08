@@ -1,25 +1,26 @@
 
 ## Preparation
 
-Execute the next command to create the image
+Execute the next commands to create the image and the network
 
 ```
 docker build . -t vendor-machine-cli -f docker/php/Dockerfile
+docker network create vendingmachine
 ```
 
 ## Installation
 ```
-docker run --rm -v $(pwd):/app -w /app  vendor-machine-cli composer install
+docker run --rm --network vendingmachine -v $(pwd):/app -w /app  vendor-machine-cli composer install
 ```
 
 ## Test
 ```
-docker run --rm -v $(pwd):/app -w /app  vendor-machine-cli php bin/phpunit
+docker run --rm --network vendingmachine -v $(pwd):/app -w /app  vendor-machine-cli php bin/phpunit
 ```
 
 ## Execution with main command
 ```
-docker run --rm -v $(pwd):/app -w /app --interactive --tty vendor-machine-cli php bin/console app:machine-vending-start
+docker run --rm --network vendingmachine --network vendingmachine -v $(pwd):/app -w /app --interactive --tty vendor-machine-cli php bin/console app:machine-vending-start
 ```
 
 You can execute all the commands after the prompt `>`
@@ -46,13 +47,13 @@ The commands relative to Products are based on the parameter `products` of `serv
 You can also run the operations individually
 
 ```
-docker run --rm -v $(pwd):/app -w /app --interactive --tty vendor-machine-cli php bin/console app:machine-vending-insert-coin 0.5
+docker run --rm --network vendingmachine -v $(pwd):/app -w /app --interactive --tty vendor-machine-cli php bin/console app:machine-vending-insert-coin 0.5
 
-docker run --rm -v $(pwd):/app -w /app --interactive --tty vendor-machine-cli php bin/console app:machine-vending-return-coin
+docker run --rm --network vendingmachine -v $(pwd):/app -w /app --interactive --tty vendor-machine-cli php bin/console app:machine-vending-return-coin
 
-docker run --rm -v $(pwd):/app -w /app --interactive --tty vendor-machine-cli php bin/console app:machine-vending-get-product WATER
+docker run --rm --network vendingmachine -v $(pwd):/app -w /app --interactive --tty vendor-machine-cli php bin/console app:machine-vending-get-product WATER
 
-docker run --rm -v $(pwd):/app -w /app --interactive --tty vendor-machine-cli php bin/console app:machine-vending-service
+docker run --rm --network vendingmachine -v $(pwd):/app -w /app --interactive --tty vendor-machine-cli php bin/console app:machine-vending-service
 ```
 
 ## Status vending machine by http
@@ -60,7 +61,7 @@ docker run --rm -v $(pwd):/app -w /app --interactive --tty vendor-machine-cli ph
 If you want to check the inventory of the vending machine you can execute:
 
 ```
-docker run --rm --net=host -p 8000:8000 -v $(pwd):/app -w /app  vendor-machine-cli php -S localhost:8000 -t public/
+docker run --rm --network host -p 8000:8000 -v $(pwd):/app -w /app  vendor-machine-cli php -S localhost:8000 -t public/
 ```
 
 And then execute the next URL in your browser:
@@ -75,13 +76,36 @@ You will get something like that:
 {"products":[{"WATER":1},{"JUICE":2},{"SODA":3}],"coins":[{"0.5":4},{"0.1":5},{"0.25":6},{"1":7}],"credit":[[0.5]]}
 ```
 
+## Data visualization
+
+To use this functionality you need to change the property `dataMiningEnabled` to `true` in `services.yaml`
+
+Next execute the next command:
+
+```
+docker-compose -f docker/docker-compose.yml up
+```
+
+Enter to:
+
+```
+http://localhost:5601/
+```
+
+Import `etc/kibana/dashboard_vending_machine.ndjson` to `Management -> Saved Object -> Import`
+
+An example of visualization.
+![Screenshot](etc/kibana/dashboard.png)
+
 ## Improvements
 
 - phpunit -> Check the events created
 - phpunit -> Check the messages of the exceptions
+  phpunit -> Check elastic
 - Protect by token the status endpoint
 - Create an API for all the operations in the vending machine
 - Create a UI to manage the API
+- Add Products and Coins dynamically  
 - New repositories (redis, mongo, ...)
 
 
