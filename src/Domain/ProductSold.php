@@ -7,12 +7,12 @@ use App\Domain\Product\Product;
 class ProductSold
 {
     private Product $product;
-    private array $coins;
+    private array $coinsToReturn;
 
-    private function __construct(Product $product, array $coins = [])
+    private function __construct(Product $product, array $coinsToReturn = [])
     {
         $this->product = $product;
-        $this->coins = $coins;
+        $this->coinsToReturn = $coinsToReturn;
     }
 
     public function product(): Product
@@ -20,16 +20,16 @@ class ProductSold
         return $this->product;
     }
 
-    public function coins(): array
+    public function coinsToReturn(): array
     {
-        return $this->coins;
+        return $this->coinsToReturn;
     }
 
-    public static function fromData(Product $product, array $coins = []): ProductSold
+    public static function fromData(Product $product, array $coinsToReturn = []): ProductSold
     {
         return new self(
             $product,
-            $coins
+            $coinsToReturn
         );
     }
 }

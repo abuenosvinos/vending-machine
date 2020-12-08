@@ -43,7 +43,7 @@ class CheckProductTest extends KernelTestCase
         $productSold = $checkProduct->__invoke($productToBuy);
 
         $this->assertEquals($productSold->product(), $productToBuy);
-        $this->assertEquals($productSold->coins(), $dataCoinsReturned);
+        $this->assertEquals($productSold->coinsToReturn(), $dataCoinsReturned);
     }
 
     public function populateData($productToBuy, $dataListProductBox, $dataListCoinBox, $dataListCoinsUser, $dataCoinsReturned): array

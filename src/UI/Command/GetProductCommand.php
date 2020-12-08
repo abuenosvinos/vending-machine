@@ -77,7 +77,7 @@ class GetProductCommand extends Command
 
         if ($productSold instanceof ProductSold) {
             $response = [$productSold->product()->name()];
-            $response = array_reduce($productSold->coins(),
+            $response = array_reduce($productSold->coinsToReturn(),
                 function($carry, Coin $item) {
                     $carry[] = $item->value();
                     return $carry;
