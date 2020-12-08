@@ -30,11 +30,7 @@ final class GetProduct extends CheckProduct
         $this->updateCoinsFromCoinBox($coinsToReturn);
         $this->emptyCoinUser();
 
-        $this->bus->notify(...[new ProductWasSold(
-            [
-                'product' => $product
-            ]
-        )]);
+        $this->bus->notify(...[new ProductWasSold($product)]);
     }
 
     private function checkMoneyBack(Product $product): array
