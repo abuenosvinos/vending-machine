@@ -35,7 +35,7 @@ class GetProductOperation implements Operation
     public function params(string $input): array
     {
         return [
-            'product' => $input
+            'product' => str_replace('GET-', '', $input)
         ];
     }
 }
