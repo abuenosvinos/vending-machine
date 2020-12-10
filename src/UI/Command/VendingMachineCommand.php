@@ -36,6 +36,13 @@ class VendingMachineCommand extends Command
         $this->container = $container;
     }
 
+    public function setOperations(iterable $operations)
+    {
+        foreach ($operations as $operation) {
+            $this->operations[] = $operation;
+        }
+    }
+
     protected function configure(): void
     {
         $this
@@ -54,11 +61,6 @@ class VendingMachineCommand extends Command
         // apply a consistent look to the commands of your application.
         // See https://symfony.com/doc/current/console/style.html
         $this->io = new SymfonyStyle($input, $output);
-
-        $this->operations[] = new ServiceOperation();
-        $this->operations[] = new GetProductOperation($this->container);
-        $this->operations[] = new ReturnCoinOperation();
-        $this->operations[] = new InsertCoinOperation($this->container);
     }
 
 
