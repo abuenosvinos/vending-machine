@@ -101,7 +101,7 @@ An example of visualization.
 
 - phpunit -> Check the events created
 - phpunit -> Check the messages of the exceptions
-  phpunit -> Check elastic
+- phpunit -> Check elastic
 - Protect by token the status endpoint
 - Create an API for all the operations in the vending machine
 - Create a UI to manage the API
